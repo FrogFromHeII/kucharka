@@ -1,0 +1,59 @@
+/* Základní styl pro tělo stránky */
+body {
+  display: block;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.flex-container {
+display:flex;
+flex-wrap: wrap;
+justify-content: space-around;
+}
+
+/* Jednotlivé řádky na hlavní stránce v indexu */
+.rowFrontPage {
+display: flex; /* Přidáno pro zarovnání položek na stejnou úroveň */
+align-items: center; /* Zarovnání položek na střed */
+justify-content: flex-start; /* Zarovnání položek na začátek */
+width: 24%;
+border-radius: 10px;
+overflow: hidden;
+box-shadow: 0px 0px 10px rgba(0,0,0,0.15);
+flex: 1 0 23%;
+margin: 1%;
+box-sizing: border-box;
+text-decoration: none;
+}
+
+/* Styl obrázku k řádkům */
+.frontPageItemPicture {
+  width: 100px;
+  height: auto;
+  margin-right: 10px;
+}
+
+.frontPageText {
+color: black; /* Černá barva textu */
+text-align: center; /* Zarovnání textu na střed */
+font-size: 18px; /* Velikost písma */
+line-height: 1.5; /* Výška řádku */
+word-wrap: break-word; /* Zalamování slov */
+text-decoration: none; /* Odstranění podtržení */
+}
+
+.header {
+  display: fixed;
+  padding: 60px;
+  text-align: center;
+  font-size: 30px;
+  width: auto;
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}

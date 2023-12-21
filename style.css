@@ -5,25 +5,27 @@ body {
   justify-content: space-around;
 }
 
+/* Kontejner pro řádky na hlavní stránce v indexu */
 .flex-container {
-display:flex;
-flex-wrap: wrap;
-justify-content: space-around;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  padding-top: 40px;
 }
 
-/* Jednotlivé řádky na hlavní stránce v indexu */
+/* Jednotlivé buňky na hlavní stránce v indexu */
 .rowFrontPage {
-display: flex; /* Přidáno pro zarovnání položek na stejnou úroveň */
-align-items: center; /* Zarovnání položek na střed */
-justify-content: flex-start; /* Zarovnání položek na začátek */
-width: 24%;
-border-radius: 10px;
-overflow: hidden;
-box-shadow: 0px 0px 10px rgba(0,0,0,0.15);
-flex: 1 0 23%;
-margin: 1%;
-box-sizing: border-box;
-text-decoration: none;
+  display: flex; /* Přidáno pro zarovnání položek na stejnou úroveň */
+  align-items: center; /* Zarovnání položek na střed */
+  justify-content: flex-start; /* Zarovnání položek na začátek */
+  width: 24%;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.15);
+  flex: 0 0 23%;
+  margin: 1%;
+  box-sizing: border-box;
+  text-decoration: none;
 }
 
 /* Styl obrázku k řádkům */
@@ -34,26 +36,75 @@ text-decoration: none;
 }
 
 .frontPageText {
-color: black; /* Černá barva textu */
-text-align: center; /* Zarovnání textu na střed */
-font-size: 18px; /* Velikost písma */
-line-height: 1.5; /* Výška řádku */
-word-wrap: break-word; /* Zalamování slov */
-text-decoration: none; /* Odstranění podtržení */
+  color: black; /* Černá barva textu */
+  text-align: center; /* Zarovnání textu na střed */
+  font-size: 18px; /* Velikost písma */
+  line-height: 1.5; /* Výška řádku */
+  word-wrap: break-word; /* Zalamování slov */
+  text-decoration: none; /* Odstranění podtržení */
+}
+
+.header-link {
+  text-decoration-color: black;
+  text-decoration: none;
 }
 
 .header {
-  display: fixed;
-  padding: 60px;
+  display: block;
+  padding: 10px;
   text-align: center;
-  font-size: 30px;
+  font-size: 20px;
   width: auto;
 }
 
 .footer {
-  position: fixed;
+  position: static;
   left: 0;
   bottom: 0;
   width: 100%;
   text-align: center;
+  background-color: #FFFFFF;
+  }
+
+
+
+
+/* css pro recept.php*/
+.recept-container {
+  margin-left: 300px;
+  margin-right: 300px;
+}
+
+.recept-header {
+  display: flex;
+  align-items: flex-start;
+}
+
+.recept-obrazek {
+  width: 500px;
+  height: 400px;
+}
+
+.recept-nazev {
+  margin-left: 20px;
+}
+
+.recept-body {
+  display: flex;
+}
+
+.recept-ingredience {
+  flex: 1;
+}
+
+.recept-postup {
+  flex: 1;
+}
+
+.recept-header {
+  display: flex;
+}
+
+.recept-header > div {
+  margin-left: 20px;
 }

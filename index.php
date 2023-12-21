@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="cs">
 
-<?php require_once 'html/header.php'; ?>
+<?php require_once 'html/header.html'; ?>
 
 <body>
   <div class="flex-container">  
@@ -20,6 +20,6 @@
   </div>
 </body>
 
-<?php require_once 'html\footer.php' ?>
+<?php require_once 'html\footer.html' ?>
 
 </html>

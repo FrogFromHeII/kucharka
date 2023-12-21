@@ -5,9 +5,9 @@ import shutil
 import docx2txt
 
 # Cesta k složce s dokumenty Word
-folder_path = "C:\\xampp\\htdocs\\try\\Recepty"
-new_folder_path = "C:\\xampp\\htdocs\\try\\ReceptyVDatabazi"
-image_folder_path = "C:\\xampp\\htdocs\\try\\ReceptyVDatabazi\\Obrázky_k_receptům"  # Složka pro uložení obrázků
+folder_path = "C:\\xampp\\htdocs\\kucharka\\Recepty"
+new_folder_path = "C:\\xampp\\htdocs\\kucharka\\ReceptyVDatabazi"
+image_folder_path = "C:\\xampp\\htdocs\\kucharka\\ReceptyVDatabazi\\Obrázky_k_receptům"  # Složka pro uložení obrázků
 
 # Seznam pro ukládání receptů
 recepty = []
@@ -24,7 +24,7 @@ for filename in os.listdir(folder_path):
             text = docx2txt.process(docx_file)
 
             # Rozdělení textu na název, ingredience a postup
-            nazev, ingredience, postup, picture_path = text.split(";", 3)
+            nazev, kategorie, cas, ingredience, postup, picture_path = text.split(";", 5)
 
             # Převedení textu na HTML
             with open(file_path, "rb") as docx_file:
@@ -32,7 +32,7 @@ for filename in os.listdir(folder_path):
                         html = result.value # obsahuje převedený HTML
                         messages = result.messages # obsahuje jakékoliv zprávy, například o nepodporovaných funkcích Wordu
 
-            nazev_html, ingredience_html, postup_html, picture_path_html = html.split(";", 3)
+            nazev_html, kategire_html, cas_html, ingredience_html, postup_html, picture_path_html = html.split(";", 5)
 
             # Uložení do asociativního seznamu
             recept = {
@@ -40,7 +40,9 @@ for filename in os.listdir(folder_path):
                 "nazev_html": nazev_html,
                 "ingredience": ingredience_html,
                 "postup": postup_html,
-                "obrazek": picture_path
+                "obrazek": picture_path,
+                "cas": cas,
+                "kategorie": kategorie
             }
 
             # Přidání receptu do seznamu receptů
@@ -52,4 +54,6 @@ for filename in os.listdir(folder_path):
 # Uložení seznamu receptů do JSON souboru
 with open('HTMLRecepty.json', 'w') as json_file:
     json.dump(recepty, json_file)
-
+# Uložení seznamu receptů do JSON souboru
+with open('HTMLRecepty.json', 'w') as json_file:
+    json.dump(recepty, json_file)

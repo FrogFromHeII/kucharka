@@ -1,5 +1,5 @@
 <?php 
-include 'html/header.php';
+include 'html/header.html';
 include 'dnWeb.php';
 
 $web = new dnWeb();
@@ -57,5 +57,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <?php
 $conn = null;
-include 'html/footer.php';
+include 'html/footer.html';
 ?>

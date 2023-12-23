@@ -3,6 +3,9 @@
 class dnWeb {
     private $conn;
 
+    function __construct() {
+        $this->connectToDatabase();
+    }
 // připojení k databázi
     function connectToDatabase() {
         include 'database.php';
@@ -40,22 +43,23 @@ class dnWeb {
         file_put_contents('HTMLRecepty.json', '');
     }
 
-// načtení id, názvu a obrázku a vytvoření dynamických webů na hlavní stránce
-    function displayDataFromDatabase() {
-        $sql = "SELECT id, nazev, obrazek FROM recepty";
-        $result = $this->conn->query($sql);
+// načtení a zobrazení dat z databáze, podle volitelného SQL a parametrů
+function displayDataFromDatabase($sql, $params = array()) {
+    $stmt = $this->conn->prepare($sql);
+    $stmt->execute($params);
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        if ($result->rowCount() > 0) {
-            while($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                echo "<a class = 'rowFrontPage' href='recept.php?id=" . $row["id"] ."-nz=". $row["nazev"] . "'>";
-                echo "<img src ='" . $row['obrazek'] . "'class = 'frontPageItemPicture' alt = 'Obrázek k receptu'>"
-                . "<div class = frontPageText>" . $row["nazev"] . "</div>";
-                echo "</a>";
-            }
-        } else {
-            echo "0 výsledků";
+    if (count($result) > 0) {
+        foreach ($result as $row) {
+            echo "<a class = 'rowFrontPage' href='recept.php?id=" . $row["id"] ."-nz=". $row["nazev"] . "'>";
+            echo "<img src ='" . $row['obrazek'] . "'class = 'frontPageItemPicture' alt = 'Obrázek k receptu'>"
+            . "<div class = frontPageText>" . $row["nazev"] . "</div>";
+            echo "</a>";
         }
+    } else {
+        echo "V této kategorii nejsou žádné recepty.";
     }
+}
 
 // volitelné načtení dat z volitelné databáze
     function getDataFromDatabase($columns, $table) {
@@ -98,6 +102,23 @@ class dnWeb {
         $stmt->execute(['recept' => $recept, 'hodnoceni' => $hodnoceni]);
     }
 
+// Rozbalovací okno se všemi kategoriemi z databáze
+    function getCategoriesDropdown() {
+        // Získání kategorií z databáze
+        $columns = array("id", "nazev");
+        $result = $this->getDataFromDatabase($columns, "kategorie");
+
+        // Vytvoření rozbalovacího seznamu
+        $dropdown = "<select onchange='window.location.href=this.value;'>\n";
+        $dropdown .= "<option value=''>Vyberte kategorii</option>\n";
+        while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+            $dropdown .= "<option value='category.php?id=" . $row["id"] . "'>" . $row["nazev"] . "</option>\n";
+        }
+        $dropdown .= "</select>\n";
+
+        return $dropdown;
+    }
+    
 // odpojení databáze
     function closeConnection() {
         $this->conn = null;

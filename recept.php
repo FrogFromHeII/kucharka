@@ -1,9 +1,6 @@
 <?php 
-include 'html/header.html';
-include 'dnWeb.php';
+include 'html/header.php';
 
-$web = new dnWeb();
-$web->connectToDatabase();
 $id = $_GET['id'];
 $recept = $web->getReceptById($id);
 $rating_avg = $web->getAverageRating($id);
@@ -57,5 +54,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <?php
 $conn = null;
-include 'html/footer.html';
+include 'html/footer.php';
 ?>

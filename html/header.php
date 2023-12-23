@@ -2,11 +2,20 @@
     <meta charset="utf-8">
     <title>Moje stránka s recepty</title>
     <link rel="stylesheet" href="style.css">
+    <img src="html/pasta-svgrepo-com.svg" alt="Obrázek špaget" width="32" height="32">
 </head>
+
+<?php
+include 'dnWeb.php';
+$web = new dnWeb();
+?>
 
 <header>
     <div class = 'header'>
         <h1><a class = "header-link" href="index.php">Moje stránka s recepty</a></h1>
+
+            <!-- Rozbalovací seznam kategorií -->
+            <?php echo $web->getCategoriesDropdown(); ?>
 
         <!-- Funkce pro systém vyhledávání -->
         <script>

@@ -1,25 +1,23 @@
 <!DOCTYPE html>
 <html lang="cs">
 
-<?php require_once 'html/header.html'; ?>
+<?php require_once 'html/header.php'; ?>
 
 <body>
   <div class="flex-container">  
 
   <?php
-  include 'dnWeb.php';
-  $web = new dnWeb();
-  $web->connectToDatabase();
+
   $data = $web->loadDataFromJson();
   $web->insertDataToDatabase($data);
   $web->clearJsonFile();
-  $web->displayDataFromDatabase();
-  $web->closeConnection();
+  $sql = "SELECT id, nazev, obrazek FROM recepty";
+  $web->displayDataFromDatabase($sql);
   ?>
-  
+
   </div>
 </body>
 
-<?php require_once 'html\footer.html' ?>
+<?php require_once 'html\footer.php' ?>
 
 </html>

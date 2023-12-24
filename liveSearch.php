@@ -11,10 +11,10 @@ $result = $conn->query($sql);
 
 // vytvoření array names
 $names = array();
-if ($result->rowCount() > 0) {
-  while($row = $result->fetch(PDO::FETCH_ASSOC)) {
-    array_push($names, $row);
-  }
+if (count($result) > 0) {
+    foreach ($result as $row) {
+        array_push($names, $row);
+    }
 }
 
 $q=$_GET["q"];

@@ -1,20 +1,26 @@
 <?php 
-include 'html/header.php';
+require_once 'html/header.php';
 
-$id = $_GET['id'];
-$recept = $web->getReceptById($id);
-$rating_avg = $web->getAverageRating($id);
-$rating_sum = $web->getTotalRatings($id);
+$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+$sql = "SELECT recepty.*, kategorie.nazev AS kategorie_nazev FROM recepty 
+        JOIN kategorie ON recepty.kategorie = kategorie.id 
+        WHERE recepty.id = :id";
+$recept = $web->executeQuery($sql, ['id' => $id]);
+
+$rating_avg = $web->executeQuery("SELECT AVG(hodnoceni) as average_rating FROM hodnoceni WHERE recept = :id", ['id' => $id]);
+$rating_sum = $web->executeQuery("SELECT COUNT(*) as total FROM hodnoceni WHERE recept = :id", ['id' => $id]);
 
 // Přidání hodnocení do databáze, pokud bylo odesláno
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $hodnoceni = $_POST["hodnoceni"];
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["hodnoceni"])) {
+    $hodnoceni = intval($_POST["hodnoceni"]);
     $web->addRating($id, $hodnoceni);
     // Aktualizace hodnocení po přidání nového hodnocení
-    $rating = $web->getAverageRating($id);
-    $total_ratings = $web->getTotalRatings($id);
+    $rating_avg = $web->executeQuery("SELECT AVG(hodnoceni) as average_rating FROM hodnoceni WHERE recept = :id", ['id' => $id]);
+    $rating_sum = $web->executeQuery("SELECT COUNT(*) as total FROM hodnoceni WHERE recept = :id", ['id' => $id]);
 }
 ?>
+
 
 <?php if ($recept): ?>
     <div class="recept-container">
@@ -33,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             </div>
                 <div class="recept-info">
-                    <p class="recept-hodnoceni"><?= round($rating_avg['average_rating'] ?? 0, 2) . '/5 (' . $rating_sum . ' hodnocení)' ?></p>
+                    <p class="recept-hodnoceni"><?= round($rating_avg['average_rating'] ?? 0, 2) . '/5 (' . $rating_sum['total'] . ' hodnocení)' ?></p>
                     <p class="recept-kategorie"><?= $recept["kategorie_nazev"] ?></p>
                     <p class="recept-cas"><?= $recept["cas"] ?></p>
                 </div>
@@ -51,6 +57,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <?php else: ?>
     Recept nebyl nalezen.
 <?php endif; ?>
+
+<?php
+$conn = null;
+require_once 'html/footer.php';
+?>
 
 <?php
 $conn = null;

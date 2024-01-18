@@ -1,13 +1,14 @@
 <?php
 
 // Připojení k databázi
-include 'database.php';
-$db = new Database();
-$conn = $db->dbConnection();
+include 'dnWeb.php';
+$web = new dnWEb();
 
 // Získání názvů z databáze
 $sql = "SELECT id, nazev FROM recepty";
-$result = $conn->query($sql);
+$columns = array("id", "nazev");
+$result = $web->getDataFromDatabase($columns, "recepty");
+$web->closeConnection();
 
 // vytvoření array names
 $names = array();
@@ -47,5 +48,3 @@ if ($q !== "") {
 echo $hint === "" ? "takový recept zatím nemáme" : $hint;
 
 ?>
-
-

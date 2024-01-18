@@ -69,42 +69,93 @@ body {
 
 
 
-/* css pro recept.php*/
-.recept-container {
+/* Blok */
+.recept {
   margin-left: 300px;
   margin-right: 300px;
 }
 
-.recept-header {
+/* Elementy bloku */
+.recept__header {
   display: flex;
   align-items: flex-start;
 }
 
-.recept-obrazek {
+.recept__obrazek {
   width: 500px;
   height: 400px;
 }
 
-.recept-nazev {
+.recept__nazev {
   margin-left: 20px;
 }
 
-.recept-body {
+.recept__info {
   display: flex;
-}
-
-.recept-ingredience {
-  flex: 1;
-}
-
-.recept-postup {
-  flex: 1;
-}
-
-.recept-header {
-  display: flex;
-}
-
-.recept-header > div {
   margin-left: 20px;
+  flex-direction: column;
+}
+
+.recept__body {
+  display: flex;
+}
+
+.recept__ingredience {
+  flex: 1;
+}
+
+.recept__postup {
+  flex: 1;
+}
+
+/* Modifikátory elementu */
+.recept__header--varianta1 {
+  display: flex;
+}
+
+.recept__header--varianta2 {
+  margin-left: 20px;
+}
+
+
+
+
+
+
+/* Style the search field */
+form.example input[type=text] {
+  padding: 10px;
+  font-size: 17px;
+  border: 1px solid grey;
+  float: left;
+  width: 80%;
+  background: #f1f1f1;
+  box-sizing: border-box;
+  max-width: 50%;
+  margin: auto;
+  width: 50%;
+}
+
+/* Style the submit button */
+form.example button {
+  float: left;
+  width: 20%;
+  padding: 10px;
+  background: #2196F3;
+  color: white;
+  font-size: 17px;
+  border: 1px solid grey;
+  border-left: none; /* Prevent double borders */
+  cursor: pointer;
+}
+
+form.example button:hover {
+  background: #0b7dda;
+}
+
+/* Clear floats */
+form.example::after {
+  content: "";
+  clear: both;
+  display: table;
 }

@@ -54,6 +54,3 @@ for filename in os.listdir(folder_path):
 # Uložení seznamu receptů do JSON souboru
 with open('HTMLRecepty.json', 'w') as json_file:
     json.dump(recepty, json_file)
-# Uložení seznamu receptů do JSON souboru
-with open('HTMLRecepty.json', 'w') as json_file:
-    json.dump(recepty, json_file)

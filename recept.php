@@ -23,13 +23,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["hodnoceni"])) {
 
 
 <?php if ($recept): ?>
-    <div class="recept-container">
-        <div class="recept-header">
-            <img class="recept-obrazek" src= "<?= $recept["obrazek"] ?>" alt= "Obrázek k receptu">
-            <div>
-                <h1 class="recept-nazev"><?= $recept["nazev"] ?></h1>
+    <div class="recept">
+        <div class="recept__header recept__header--varianta1">
+            <img class="recept__obrazek" src= "<?= $recept["obrazek"] ?>" alt= "Obrázek k receptu">
+            
+            <div class="recept__nazev">
+                <h1><?= $recept["nazev"] ?></h1>
                 <div style="display: inline-block;">
-
+            </div>
                 <!-- tlačítka na hodnocení -->
                 <?php foreach(range(1,5) as $rating): ?>
                     <form method="post" style="display: inline;">
@@ -38,18 +39,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["hodnoceni"])) {
                 <?php endforeach ?>
 
             </div>
-                <div class="recept-info">
-                    <p class="recept-hodnoceni"><?= round($rating_avg['average_rating'] ?? 0, 2) . '/5 (' . $rating_sum['total'] . ' hodnocení)' ?></p>
-                    <p class="recept-kategorie"><?= $recept["kategorie_nazev"] ?></p>
-                    <p class="recept-cas"><?= $recept["cas"] ?></p>
-                </div>
+                <div class="recept__info">
+                    <p><?= round($rating_avg['average_rating'] ?? 0, 2) . '/5 (' . $rating_sum['total'] . ' hodnocení)' ?></p>
+                    <p><?= $recept["kategorie_nazev"] ?></p>
+                    <p><?= $recept["cas"] ?></p>
+                </div>    
             </div>
         </div>
-        <div class="recept-body">
-            <div class="recept-ingredience">
+        <div class="recept__body">
+            <div class="recept__ingredience">
                 <p><?= $recept["ingredience"] ?></p>
             </div>
-            <div class="recept-postup">
+            <div class="recept__postup">
                 <p><?= $recept["postup"] ?></p>
             </div>
         </div>
@@ -61,9 +62,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["hodnoceni"])) {
 <?php
 $conn = null;
 require_once 'html/footer.php';
-?>
-
-<?php
-$conn = null;
-include 'html/footer.php';
 ?>

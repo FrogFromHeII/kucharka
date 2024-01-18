@@ -37,11 +37,13 @@ $web = new dnWeb();
             }
         </script>
         <!-- Vyhledávací pole -->
-        <form action="">
-                <label for="nz">Hledat:</label>
-                <input type="text" size="30" onkeyup="showResult(this.value)" onclick="showResult(this.value)">
+        <!-- Load icon library -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+        <form class="example" action="action_page.php" autocomplete="off">
+                <input type="text" placeholder="Search.." size="30" onkeyup="showResult(this.value)" onclick="showResult(this.value)" name="search">
+                <button type="submit"><i class="fa fa-search"></i></button>
                 <div id="livesearch"></div>
-            
         </form>
     </div>
     </header>

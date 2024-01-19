@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="cs">
+
 
 <?php require_once 'html/header.php'; ?>
 

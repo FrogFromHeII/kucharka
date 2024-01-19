@@ -1,5 +1,4 @@
 <?php
-
 // Připojení k databázi
 include 'dnWeb.php';
 $web = new dnWEb();
@@ -26,25 +25,18 @@ $hint = "";
 
 // kontrola, zda proměná q obsahuje znaky
 if ($q !== "") {
-  // převedení vstupu na malá písmena
-  $q = mb_strtolower($q, 'UTF-8');
-  // získání délky vstupu
-  $len=mb_strlen($q, 'UTF-8');
-  // cyklus procházející položky v names
-  foreach($names as $name) {
-    // kontrola zda, vstup uživatele odpovídá nějáké položce ze seznamu names
-    if (mb_stristr($q, mb_substr($name["nazev"], 0, $len, 'UTF-8'), false, 'UTF-8')) {
-      // kontrola zda je proměná hint prázdná, pokud ano položka je přidána na začátek, pokud ne, přidává se na další řádek
-      if ($hint === "") {
-        $hint = "<a href='recept.php?id=" . $name["id"] . "-nz=" . $name["nazev"] . "'>" . $name["nazev"] . "</a>";
-      } else {
-        $hint .= "</br> <a href='recept.php?id=" . $name["id"] . "-nz=" . $name["nazev"] . "'>" . $name["nazev"] . "</a>";
-      }
+    // převedení vstupu na malá písmena
+    $q = mb_strtolower($q, 'UTF-8');
+    // cyklus procházející položky v names
+    foreach($names as $name) {
+        // kontrola zda, vstup uživatele odpovídá nějáké položce ze seznamu names
+        if (mb_stristr(mb_strtolower($name["nazev"], 'UTF-8'), $q, false, 'UTF-8')) {
+            // přidání odkazu na recept do výsledků
+            $hint .= "<a href='recept.php?id=" . $name["id"] . "-nz=" . $name["nazev"] . "'>" . $name["nazev"] . "</a></br>";
+        }
     }
-  }
 }
 
 // tisk nalezených receptů, popřípadě tisk chybové hlášky
 echo $hint === "" ? "takový recept zatím nemáme" : $hint;
-
 ?>

@@ -68,15 +68,26 @@ class dnWeb {
     }
 
 // obecná funkce s povinými argumenty pro SQL příkaz a pro parametry k němu
-    function executeQuery($sql, $params, $fetchAll = false) {
+function executeQuery($sql, $params = array(), $fetchAll = false) {
+    try {
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute($params);
+
+        if (!empty($params)) {
+            $stmt->execute($params);
+        } else {
+            $stmt->execute();
+        }
+
         if ($fetchAll) {
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } else {
             return $stmt->fetch(PDO::FETCH_ASSOC);
         }
+    } catch (PDOException $e) {
+        // Handle the exception (e.g., log the error, display a user-friendly message)
+        die("Error executing query: " . $e->getMessage());
     }
+}
     
 // přidání hodnocení receptu
     function addRating($recept, $hodnoceni) {
@@ -93,7 +104,7 @@ class dnWeb {
         $dropdown = "<select onchange='window.location.href=this.value;'>\n";
         $dropdown .= "<option value=''>Vyberte kategorii</option>\n";
         foreach($result as $row) {
-            $dropdown .= "<option value='category.php?id=" . $row["id"] . "'>" . $row["nazev"] . "</option>\n";
+            $dropdown .= "<option value='searchResult.php?id=" . $row["id"] . "'>" . $row["nazev"] . "</option>\n";
         }
         $dropdown .= "</select>\n";
         return $dropdown;

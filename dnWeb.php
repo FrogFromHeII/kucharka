@@ -33,7 +33,8 @@ class dnWeb {
                     'postup' => $recept['postup'], 
                     'obrazek' => $recept['obrazek'], 
                     'cas' => $recept['cas'], 
-                    'kategorie' => $recept['kategorie']
+                    'kategorie' => $recept['kategorie'],
+                    'suroviny' => $recept['suroviny']
                 ];
                 $this->executeQuery($sql, $params);
             }
@@ -46,20 +47,25 @@ class dnWeb {
     }
 
 // načtení a zobrazení dat z databáze, podle volitelného SQL a parametrů
-    function displayDataFromDatabase($sql, $params = array()) {
-        $result = $this->executeQuery($sql, $params, true);
+function displayDataFromDatabase($sql, $params = array(), $limit = null) {
+    $result = $this->executeQuery($sql, $params, true);
 
-        if (count($result) > 0) {
-            foreach ($result as $row) {
-                echo "<a class = 'rowFrontPage' href='recept.php?id=" . $row["id"] ."-nz=". $row["nazev"] . "'>";
-                echo "<img src ='" . $row['obrazek'] . "'class = 'frontPageItemPicture' alt = 'Obrázek k receptu'>"
-                . "<div class = frontPageText>" . $row["nazev"] . "</div>";
-                echo "</a>";
-            }
-        } else {
-            echo "V této kategorii nejsou žádné recepty.";
-        }
+    if ($limit !== null) {
+        $result = array_slice($result, 0, $limit);
     }
+
+    if (count($result) > 0) {
+        foreach ($result as $row) {
+            echo "<a class = 'rowFrontPage' href='recept.php?id=" . $row["id"] ."-nz=". $row["nazev"] . "'>";
+            echo "<img src ='" . $row['obrazek'] . "'class = 'frontPageItemPicture' alt = 'Obrázek k receptu'>"
+            . "<div class = frontPageText>" . $row["nazev"] . "</div>";
+            echo "</a>";
+        }
+    } else {
+        echo "V zde nejsou žádné recepty.";
+    }
+}
+
 
 // obecné načtení dat z volitelné databáze
     function getDataFromDatabase($columns, $table) {
@@ -84,7 +90,6 @@ function executeQuery($sql, $params = array(), $fetchAll = false) {
             return $stmt->fetch(PDO::FETCH_ASSOC);
         }
     } catch (PDOException $e) {
-        // Handle the exception (e.g., log the error, display a user-friendly message)
         die("Error executing query: " . $e->getMessage());
     }
 }
@@ -100,15 +105,34 @@ function executeQuery($sql, $params = array(), $fetchAll = false) {
         // Získání kategorií z databáze
         $columns = array("id", "nazev");
         $result = $this->getDataFromDatabase($columns, "kategorie");
+        
         // Vytvoření rozbalovacího seznamu
-        $dropdown = "<select onchange='window.location.href=this.value;'>\n";
-        $dropdown .= "<option value=''>Vyberte kategorii</option>\n";
+        $dropdown = "<div class='dropdown'>\n";
+        $dropdown .= "<span>Vyberte kategorii</span>\n";
+        $dropdown .= "<div class='dropdown-content'>\n";
+        
         foreach($result as $row) {
-            $dropdown .= "<option value='searchResult.php?id=" . $row["id"] . "'>" . $row["nazev"] . "</option>\n";
+            $dropdown .= "<p><a href='searchResult.php?id=" . $row["id"] . "'>" . $row["nazev"] . "</a></p>\n";
         }
-        $dropdown .= "</select>\n";
+        
+        $dropdown .= "</div>\n";
+        $dropdown .= "</div>\n";
+        
         return $dropdown;
     }
+
+
+    function getIngredientsButtons() {
+        // Získání surovin z databáze
+        $columns = array("id", "nazev");
+        $result = $this->getDataFromDatabase($columns, "suroviny");
+        // Vytvoření seznamu tlačítek
+        $buttons = "";
+        foreach($result as $row) {
+            $buttons .= "<button class='button' onclick='window.location.href=\"searchResult.php?id=" . $row["id"] . "\"'>" . $row["nazev"] . "</button>\n";
+        }
+        return $buttons;
+    }    
   
 // odpojení databáze
     function closeConnection() {

@@ -3,10 +3,13 @@ require_once 'html/header.php';
 
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-$sql = "SELECT recepty.*, kategorie.nazev AS kategorie_nazev FROM recepty 
+$sql = "SELECT recepty.*, kategorie.nazev AS kategorie_nazev, suroviny.nazev AS suroviny_nazev 
+        FROM recepty 
         JOIN kategorie ON recepty.kategorie = kategorie.id 
+        JOIN suroviny ON recepty.suroviny = suroviny.id 
         WHERE recepty.id = :id";
 $recept = $web->executeQuery($sql, ['id' => $id]);
+
 
 $rating_avg = $web->executeQuery("SELECT AVG(hodnoceni) as average_rating FROM hodnoceni WHERE recept = :id", ['id' => $id]);
 $rating_sum = $web->executeQuery("SELECT COUNT(*) as total FROM hodnoceni WHERE recept = :id", ['id' => $id]);
@@ -20,7 +23,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["hodnoceni"])) {
     $rating_sum = $web->executeQuery("SELECT COUNT(*) as total FROM hodnoceni WHERE recept = :id", ['id' => $id]);
 }
 ?>
-
 
 <?php if ($recept): ?>
     <div class="recept">
@@ -42,7 +44,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["hodnoceni"])) {
                 <div class="recept__info">
                     <p><?= round($rating_avg['average_rating'] ?? 0, 2) . '/5 (' . $rating_sum['total'] . ' hodnocení)' ?></p>
                     <p><?= $recept["kategorie_nazev"] ?></p>
-                    <p><?= $recept["cas"] ?></p>
+                    <p><?= $recept["suroviny_nazev"] ?></p>
+                    <p><?= $recept["cas"] . ' minut'?></p>
                 </div>    
             </div>
         </div>

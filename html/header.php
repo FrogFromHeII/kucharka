@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Moje stránka s recepty</title>
     <link rel="stylesheet" href="style.css">
+    <script src="cookie.js"></script>
 </head>
 
 <?php
@@ -49,7 +50,7 @@ $web = new dnWeb();
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <!-- Vyhledávací pole -->
         <form class="search-form" onsubmit="redirectToResults(); return false;">
-            <input id="searchInput" class="search-form__input" type="text" placeholder="Search.." size="30" onkeyup="showResult(this.value)" onclick="showResult(this.value)" name="search">
+            <input id="searchInput" class="search-form__input" type="text" placeholder="Vyhledávání" size="30" onkeyup="showResult(this.value)" onclick="showResult(this.value)" name="search">
             <button class="search-form__button" type="submit"><i class="fa fa-search"></i></button>
             <div id="livesearch"></div>
         </form>
@@ -57,5 +58,4 @@ $web = new dnWeb();
         <!-- Rozbalovací seznam kategorií -->
         <div class = 'header__drop-down'> <?php echo $web->getCategoriesDropdown(); ?> </div>
 
-    </div>
 </header>

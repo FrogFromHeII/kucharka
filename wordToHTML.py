@@ -24,7 +24,7 @@ for filename in os.listdir(folder_path):
             text = docx2txt.process(docx_file)
 
             # Rozdělení textu na název, ingredience a postup
-            nazev, kategorie, cas, ingredience, postup, picture_path = text.split(";", 5)
+            nazev, kategorie, cas, ingredience, postup, picture_path, suroviny = text.split(";", 6)
 
             # Převedení textu na HTML
             with open(file_path, "rb") as docx_file:
@@ -32,7 +32,7 @@ for filename in os.listdir(folder_path):
                         html = result.value # obsahuje převedený HTML
                         messages = result.messages # obsahuje jakékoliv zprávy, například o nepodporovaných funkcích Wordu
 
-            nazev_html, kategire_html, cas_html, ingredience_html, postup_html, picture_path_html = html.split(";", 5)
+            nazev_html, kategire_html, cas_html, ingredience_html, postup_html, picture_path_html, suroviny = html.split(";", 6)
 
             # Uložení do asociativního seznamu
             recept = {
@@ -42,7 +42,8 @@ for filename in os.listdir(folder_path):
                 "postup": postup_html,
                 "obrazek": picture_path,
                 "cas": cas,
-                "kategorie": kategorie
+                "kategorie": kategorie,
+                "suroviny": suroviny
             }
 
             # Přidání receptu do seznamu receptů

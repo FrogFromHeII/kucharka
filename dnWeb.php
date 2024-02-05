@@ -13,10 +13,8 @@ class dnWeb {
         $this->conn = $db->dbConnection();
     }
 
-// zíkání dat ze souboru .json
-    function loadDataFromJson() {
-        $json = file_get_contents('HTMLRecepty.json');
-        return json_decode($json, true);
+    function getBaseSql() {
+        return "SELECT id, nazev, obrazek, cas FROM recepty";
     }
 
 // vložení dat ze souboru .json do databáze
@@ -24,8 +22,8 @@ class dnWeb {
         if ($data == true) {
             foreach ($data as $recept) {
                 $sql = 
-                "INSERT INTO recepty (nazev, nazev_html, ingredience, postup, obrazek, cas, kategorie) 
-                VALUES (:nazev, :nazev_html, :ingredience, :postup, :obrazek, :cas, :kategorie)";
+                "INSERT INTO recepty (nazev, nazev_html, ingredience, postup, obrazek, cas, kategorie, suroviny) 
+                VALUES (:nazev, :nazev_html, :ingredience, :postup, :obrazek, :cas, :kategorie, :suroviny)";
                 $params = [
                     'nazev' => $recept['nazev'], 
                     'nazev_html' => $recept['nazev_html'], 
@@ -41,31 +39,23 @@ class dnWeb {
         }
     }
 
-// vyčištění souboru .json
-    function clearJsonFile() {
-        file_put_contents('HTMLRecepty.json', '');
-    }
-
-// načtení a zobrazení dat z databáze, podle volitelného SQL a parametrů
-function displayDataFromDatabase($sql, $params = array(), $limit = null) {
-    $result = $this->executeQuery($sql, $params, true);
-
-    if ($limit !== null) {
-        $result = array_slice($result, 0, $limit);
-    }
-
-    if (count($result) > 0) {
-        foreach ($result as $row) {
-            echo "<a class = 'rowFrontPage' href='recept.php?id=" . $row["id"] ."-nz=". $row["nazev"] . "'>";
-            echo "<img src ='" . $row['obrazek'] . "'class = 'frontPageItemPicture' alt = 'Obrázek k receptu'>"
-            . "<div class = frontPageText>" . $row["nazev"] . "</div>";
-            echo "</a>";
+    function displayDataFromDatabase($sql, $params = array(), $limit = null) {
+        $result = $this->executeQuery($sql, $params, true);
+    
+        if ($limit !== null) {
+            $result = array_slice($result, 0, $limit);
         }
-    } else {
-        echo "V zde nejsou žádné recepty.";
+    
+        if (count($result) > 0) {
+            foreach ($result as $row) {
+                echo "<a class = 'rowFrontPage' href='recept.php?id=" . $row["id"] ."-nz=". $row["nazev"] . "'>";
+                echo "<img src ='" . $row['obrazek'] . "'class = 'frontPageItemPicture' alt = 'Obrázek k receptu'>"
+                . "<div class = frontPageText>" . $row["nazev"] . "</div>"
+                . "<div class = 'frontPageTime'>" . $row["cas"] . "</div>";
+                echo "</a>";
+            }
+        }
     }
-}
-
 
 // obecné načtení dat z volitelné databáze
     function getDataFromDatabase($columns, $table) {
@@ -120,7 +110,6 @@ function executeQuery($sql, $params = array(), $fetchAll = false) {
         
         return $dropdown;
     }
-
 
     function getIngredientsButtons() {
         // Získání surovin z databáze

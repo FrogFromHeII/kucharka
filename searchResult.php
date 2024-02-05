@@ -10,7 +10,8 @@
     // Display search results if search query is provided
     if (!empty($q)) {
         // Zobrazení dat podle živého vyhledávání
-        $sql = "SELECT id, nazev, obrazek FROM recepty WHERE LOWER(nazev) LIKE :searchTerm";
+        $baseSql = $web->getBaseSql();
+        $sql = "$baseSql WHERE LOWER(nazev) LIKE :searchTerm";
         $params = array('searchTerm' => '%' . strtolower($q) . '%');
         $web->displayDataFromDatabase($sql, $params);
     } elseif ($id !== null) {
@@ -20,11 +21,10 @@
         $result = $web->getDataFromDatabase($columns, $table);
 
         // Zobrazení dat podle id kategorie
-        $sql = "SELECT id, nazev, obrazek FROM recepty WHERE kategorie = :categoryId";
+        $baseSql = $web->getBaseSql();
+        $sql = "$baseSql WHERE kategorie = :categoryId";
         $params = array('categoryId' => $id);
         $web->displayDataFromDatabase($sql, $params);
-    } else {
-        echo "Invalid category ID.";
     }
 
     require_once 'html/footer.php';
